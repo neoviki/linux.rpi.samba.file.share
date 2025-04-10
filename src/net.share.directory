@@ -1,16 +1,26 @@
+#!/bin/bash
+
+#--------------------------------------------------#
+# UTILITY DETAILS | SETUP SAMBA NETWORK FILE SHARE #
+#--------------------------------------------------#
+#          AUTHOR | VIKI (A) V NATARAJAN           #
+#--------------------------------------------------#
+#         CONTACT | WWW.VIKI.DESIGN                #
+#--------------------------------------------------#
+
 log_s="[ success..]"
 log_n="[ status...]"
 log_e="[ error....]"
 
 if [ $# -lt 1 ]; then
     echo "Usage:"
-    echo 
-    echo "	./setup_samba_share.sh <folder_name>"
-    echo 
-    echo "	./setup_samba_share.sh /share"
-    echo 
     echo
-    exit 1 
+    echo "	net.share.directory <directory_name>"
+    echo
+    echo "	Example: net.share.directory /share"
+    echo
+    echo
+    exit 1
 fi
 
 folder_name=$1"/share"
@@ -34,11 +44,11 @@ else
 fi
 
 echo $log_n" creating share"
-ls $folder_name 
+ls $folder_name
 if [ $? -eq 0 ]; then
    $log_n" share already exist"
-else   
-   sudo mkdir -p $folder_name 2>&- /dev/null 
+else
+   sudo mkdir -p $folder_name 2>&- /dev/null
    command_status "share creation"
 fi
 
@@ -49,7 +59,7 @@ sudo chown $USER:$USER $folder_name
 
 echo $log_n" creating configuration file"
 echo "[share]" >> /tmp/smb.conf
-echo "Comment = Pi_Share" >> /tmp/smb.conf 
+echo "Comment = Pi_Share" >> /tmp/smb.conf
 echo "Path = "$folder_name >> /tmp/smb.conf
 echo "Browseable = yes" >> /tmp/smb.conf
 echo "Writeable = Yes" >> /tmp/smb.conf
